@@ -2,7 +2,7 @@ import { Document } from "mongoose";
 
 export class User extends Document {
   name: String;
-  age: Date;
+  age: Number;
   login: String;
   password: String;
 }
