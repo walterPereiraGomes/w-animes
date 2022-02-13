@@ -4,5 +4,5 @@ export class User extends Document {
   name: String;
   age: Number;
   login: String;
-  password: String;
+  password: string;
 }

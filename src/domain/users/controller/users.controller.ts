@@ -21,7 +21,6 @@ export class UsersController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   async create(@Body() userDto: UserCreateDto) {
     return await this.userService.create(userDto)
   }
@@ -33,7 +32,6 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   async deleteById(@Param('id') id: string) {
     this.userService.delete(id);
   }
