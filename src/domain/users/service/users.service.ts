@@ -19,6 +19,10 @@ export class UsersService {
     return await this.userModel.findById(id).exec();
   }
 
+  async getByLogin(login: string): Promise<User> {
+    return await this.userModel.findOne({ login }).exec();
+  }
+
   async create(user: UserCreateDto) {
     const createdUser = new this.userModel(user);
     return await createdUser.save();
