@@ -5,4 +5,5 @@ export class User extends Document {
   age: Number;
   login: String;
   password: string;
+  isAdmin: boolean;
 }

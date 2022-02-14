@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator'
+import { IsIn, IsNotEmpty } from 'class-validator'
 
 export class UserCreateDto {
   @IsNotEmpty()
@@ -12,4 +12,6 @@ export class UserCreateDto {
 
   @IsNotEmpty()
   password: string
+
+  isAdmin: boolean
 }

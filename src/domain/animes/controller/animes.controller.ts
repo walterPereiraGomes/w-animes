@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { AuthAdminGuard } from 'src/domain/auth/guard/auth-admin.guard';
 import { JwtAuthGuard } from 'src/domain/auth/guard/jwt-auth.guard';
 import { AnimeCreateDto } from '../dto/animeCreate.dto';
 import { Anime } from '../entity/anime.entity';
@@ -23,6 +24,7 @@ export class AnimesController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthAdminGuard)
   async create(@Body() anime: AnimeCreateDto) {
     return this.animesService.create(anime)
   }

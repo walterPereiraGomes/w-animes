@@ -1,6 +1,8 @@
-import { IsNotEmpty } from 'class-validator'
+import { Type } from 'class-transformer';
+import { IsDateString, IsNotEmpty, MaxDate, maxDate, MinDate } from 'class-validator'
 
 export class AnimeCreateDto {
+
   @IsNotEmpty()
   name: String;
 
@@ -8,7 +10,8 @@ export class AnimeCreateDto {
   author: String;
 
   @IsNotEmpty()
-  createdAge: Date;
+  @IsDateString(null, { message: "invalid date"})
+  creationDate: Date;
 
   @IsNotEmpty()
   description: String;

@@ -6,4 +6,6 @@ export class UserUpdateDto {
   login: string
 
   password: string
+
+  admin: boolean
 }

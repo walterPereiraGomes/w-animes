@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserCreateDto } from '../dto/userCreate.dto';
@@ -25,24 +25,39 @@ export class UsersService {
   }
 
   async create(user: UserCreateDto) {
+      
+    await this.validateLogin(user.login)
+
     user.password = await hash(user.password, 10);
+
     const createdUser = new this.userModel(user);
     return await createdUser.save();
+
   }
 
   async update(newUser: UserUpdateDto, id: string): Promise<User> {
-    try {
-      const user: User = await this.getById(id);
-      const userUpdated = Object.assign(user, newUser);
-      await this.userModel.updateOne({ _id: id}, userUpdated).exec();
 
-      return userUpdated;
-    } catch (e: any) {
-      console.log('e :>> ', e);
+    const user: User = await this.getById(id);
+
+    if(user.login) {
+      const userWithSameLogin: User = await this.getByLogin(newUser.login);
+  
+      if (userWithSameLogin && userWithSameLogin.id !== user.id) throw new BadRequestException(['login already exists in system']);
     }
+
+    const userUpdated = Object.assign(user, newUser);
+    await this.userModel.updateOne({ _id: id}, userUpdated).exec();
+
+    return userUpdated;
   }
 
   async delete(id: string){
     return await this.userModel.deleteOne({ _id: id}).exec()
+  }
+
+  async validateLogin(login: string) {
+    const userWithSameLogin: User = await this.getByLogin(login);
+  
+    if (userWithSameLogin) throw new BadRequestException(['login already exists in system'])
   }
 }

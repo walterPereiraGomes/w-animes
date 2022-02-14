@@ -1,8 +1,11 @@
-import { Document } from "mongoose";
+import { IsNotEmpty } from 'class-validator'
 
-export class Anime extends Document {
+export class AnimeCreateDto {
   name: String;
+
   author: String;
+
   creationDate: Date;
+
   description: String;
 }

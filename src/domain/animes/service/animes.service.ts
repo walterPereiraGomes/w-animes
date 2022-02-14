@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { AnimeCreateDto } from '../dto/animeCreate.dto';
@@ -17,6 +17,14 @@ export class AnimesService {
   }
 
   async create(anime: AnimeCreateDto) {
+    
+    if(new Date(anime.creationDate) > new Date()) throw new BadRequestException(['creation date cannot be greater than current date'])
+    
+    const createdAnime = new this.animeModel(anime);
+    return await createdAnime.save();
+  }
+
+  async update(anime: AnimeCreateDto) {
     const createdAnime = new this.animeModel(anime);
     return await createdAnime.save();
   }
